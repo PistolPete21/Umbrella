@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        applicationId "com.nerdery.umbrella"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
+
+        // TODO Replace with your API key
+        buildConfigField "String", "API_KEY", "\"79b2925794e93cf9\""
+        buildConfigField "String", "API_URL", "\"http://api.wunderground.com\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+
+    def SUPPORT_LIB_VERSION = '27.0.0'
+    def RETROFIT_VERSION = '2.0.0-beta3'
+
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
+    implementation "com.android.support:recyclerview-v7:$SUPPORT_LIB_VERSION"
+
+    implementation "com.android.support:cardview-v7:$SUPPORT_LIB_VERSION"
+
+    implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
+    implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+    implementation "com.android.support:support-v4:$SUPPORT_LIB_VERSION"
+}
