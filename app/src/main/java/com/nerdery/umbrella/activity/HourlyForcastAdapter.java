@@ -29,7 +29,7 @@ public class HourlyForcastAdapter extends RecyclerView.Adapter<HourlyForcastAdap
     // inflates the cell layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.list_weather_today_tomorrow, parent, false);
+        View view = mInflater.inflate(R.layout.list_weather_forecast, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -54,8 +54,8 @@ public class HourlyForcastAdapter extends RecyclerView.Adapter<HourlyForcastAdap
 
         public ViewHolder(View v) {
             super(v);
-            myTextView = (TextView) v.findViewById(R.id.today_tomorrow);
-            mHourlyData = (TextView) v.findViewById(R.id.weather_data);
+//            myTextView = (TextView) v.findViewById(R.id.today_tomorrow);
+//            mHourlyData = (TextView) v.findViewById(R.id.weather_data);
         }
 
         @Override
