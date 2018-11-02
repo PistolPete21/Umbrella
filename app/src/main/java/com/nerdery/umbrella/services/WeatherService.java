@@ -3,7 +3,6 @@ package com.nerdery.umbrella.services;
 import android.location.Location;
 import android.util.Log;
 
-import com.nerdery.umbrella.BuildConfig;
 import com.nerdery.umbrella.adapter.ForecastAdapter;
 import com.nerdery.umbrella.fragment.ForecastFragment;
 import com.nerdery.umbrella.model.Forecast;
@@ -16,25 +15,35 @@ import retrofit2.Response;
  * Manages access to the various APIs we are using
  */
 public class WeatherService {
-    private static final String BASE_URL = BuildConfig.API_URL;
+    private DataListener dataListener;
 
-    private static ForecastCall getWeatherService() {
-        return RetrofitClient.getClient(BASE_URL + BuildConfig.API_KEY).create(ForecastCall.class);
+    public interface DataListener {
+        void onDataLoaded(Forecast forecast);
     }
 
-    public static void getWeatherData(Location location, ForecastAdapter adapter, final ForecastFragment forecastFragment) {
-        ForecastCall call = WeatherService.getWeatherService();
+    public WeatherService(DataListener dataListener) {
+        this.dataListener = dataListener;
+    }
 
-        Log.i("API CALL", call.getForecast(location.getLatitude(), location.getLongitude()).request().url().toString());
+    private ForecastCall getWeatherService() {
+        RetrofitClient retrofitClient = new RetrofitClient();
+        return retrofitClient.getClient().create(ForecastCall.class);
+    }
 
-        call.getForecast(location.getLatitude(), location.getLongitude()).enqueue(new Callback<Forecast>() {
+    public void fetchWeatherData(Location location, ForecastAdapter adapter, final ForecastFragment forecastFragment) {
+        WeatherService weatherService = new WeatherService(dataListener);
+        ForecastCall forecastCall = weatherService.getWeatherService();
+
+        Log.i("API CALL", forecastCall.getForecast(location.getLatitude(), location.getLongitude()).request().url().toString());
+
+        forecastCall.getForecast(location.getLatitude(), location.getLongitude()).enqueue(new Callback<Forecast>() {
             @Override
             public void onResponse(Call<Forecast> call, Response<Forecast> response) {
                 if (response.isSuccessful()) {
-                    assert response.body() != null;
-
-                    // Update the current conditions views.
-                    forecastFragment.updateCurrentForecast(response.body());
+                    if (response.body() != null && dataListener != null) {
+                        //Send message to main fragment to let it know that the data is loaded
+                        dataListener.onDataLoaded(response.body());
+                    }
                 } else {
                     Log.e("REST ERRPOR", String.valueOf(response.code()));
                 }

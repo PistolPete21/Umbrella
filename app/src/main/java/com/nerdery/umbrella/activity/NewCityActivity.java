@@ -5,10 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nerdery.umbrella.R;
-import com.nerdery.umbrella.fragment.ForecastFragment;
+import com.nerdery.umbrella.fragment.NewCityFragment;
 import com.nerdery.umbrella.utils.FragmentTags;
 
-public class ForecastActivity extends AppCompatActivity {
+public class NewCityActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,10 +16,10 @@ public class ForecastActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
 
         FragmentManager fm = getSupportFragmentManager();
-        ForecastFragment fragment = (ForecastFragment) fm.findFragmentByTag(FragmentTags.ForecastFragment);
+        NewCityFragment fragment = (NewCityFragment) fm.findFragmentByTag(FragmentTags.NewCityFragment);
 
         if (fragment == null) {
-            fragment = new ForecastFragment();
+            fragment = new NewCityFragment();
             fm.beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
     }

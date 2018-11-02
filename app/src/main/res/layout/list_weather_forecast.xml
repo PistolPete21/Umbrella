@@ -11,11 +11,12 @@
         android:id="@+id/forecast_day"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/cardview_dark_background"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp" />
 
     <View
         android:layout_marginLeft="16dp"

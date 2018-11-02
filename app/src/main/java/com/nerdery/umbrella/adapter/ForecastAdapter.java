@@ -9,40 +9,43 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nerdery.umbrella.R;
+import com.nerdery.umbrella.model.ForecastData;
 
 import java.util.List;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder> {
 
-    private ItemClickListener itemClickListener;
+    private Context context;
     private LayoutInflater inflater;
-    private List<String> items;
+    private List<ForecastData> dailyForecast;
 
-    public ForecastAdapter(Context context, List<String> items) {
-        this.items = items;
+    public ForecastAdapter(Context context, List<ForecastData> dailyForecast) {
+        this.context = context;
+        this.dailyForecast = dailyForecast;
         this.inflater = LayoutInflater.from(context);
-        this.itemClickListener = itemClickListener;
     }
 
     @NonNull
     @Override
     public ForecastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = inflater.inflate(R.layout.list_weather_forecast, parent, false);
-                return new ForecastViewHolder(view);
+        View view = inflater.inflate(R.layout.list_weather_forecast, parent, false);
+        return new ForecastViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
-        String hourlyForecast = items.get(position);
-        holder.forecast.setText(hourlyForecast);
+        //ForecastData day = wee.get(position);
+
+        //String currentDay = day.getTime()
     }
 
     @Override
     public int getItemCount() {
-        return items == null ? 0 : items.size();
+        return 0;
+        //return items == null ? 0 : items.size();
     }
 
-    public class ForecastViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ForecastViewHolder extends RecyclerView.ViewHolder {
 
         TextView day;
         TextView forecast;
@@ -52,11 +55,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
             day = itemView.findViewById(R.id.forecast_day);
             forecast = itemView.findViewById(R.id.forecast_data);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (itemClickListener != null) itemClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 

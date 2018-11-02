@@ -1,20 +1,17 @@
 package com.nerdery.umbrella.model;
 
-import android.app.Activity;
 import android.location.Location;
-
-import static com.nerdery.umbrella.utils.SharedPreferencesHelper.getStringFromSharedPrefs;
 
 public class WeatherLocation {
 
-    String name;
-    String latitude;
-    String longitude;
+    private String name;
+    private String latitude;
+    private String longitude;
 
-    public WeatherLocation(Activity activity) {
-        setName(getStringFromSharedPrefs("city", activity));
-        setLatitude(getStringFromSharedPrefs("latitude", activity));
-        setLongitude(getStringFromSharedPrefs("longitude", activity));
+    public WeatherLocation(String name, String latitude, String longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getName() {
@@ -25,7 +22,7 @@ public class WeatherLocation {
         this.name = name;
     }
 
-    public String getLatitude() {
+    private String getLatitude() {
         return latitude;
     }
 
@@ -33,7 +30,7 @@ public class WeatherLocation {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    private String getLongitude() {
         return longitude;
     }
 
