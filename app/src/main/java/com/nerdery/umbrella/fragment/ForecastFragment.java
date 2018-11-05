@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,27 +17,23 @@ import com.nerdery.umbrella.R;
 import com.nerdery.umbrella.activity.NewCityActivity;
 import com.nerdery.umbrella.adapter.ForecastAdapter;
 import com.nerdery.umbrella.model.Forecast;
+import com.nerdery.umbrella.model.ForecastData;
 import com.nerdery.umbrella.model.WeatherLocation;
 import com.nerdery.umbrella.services.WeatherService;
-import com.nerdery.umbrella.widget.DynamicGridLayoutManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ForecastFragment extends Fragment implements WeatherService.DataListener {
 
     private ForecastAdapter adapter;
     private RecyclerView recyclerView;
-    private DynamicGridLayoutManager dynamicGridLayoutManager;
-    private List<String> adaterItems = new ArrayList<>();
-    private FrameLayout frameLayout;
     private WeatherLocation location;
     private CardView cardView;
     private TextView currentTemp;
     private TextView currentCondition;
     private TextView locationStatus;
     private ImageView settingsIcon;
-    private List<Forecast> forecast;
+    private List<ForecastData> forecast;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,13 +41,13 @@ public class ForecastFragment extends Fragment implements WeatherService.DataLis
 
         recyclerView = v.findViewById(R.id.fragment_weather_recyclerview);
         if (adapter == null) {
-            //adapter = new ForecastAdapter(getActivity(), forecast);
+            adapter = new ForecastAdapter(getActivity(), null);
         }
 
         location = new WeatherLocation("Bloomington, MN","44.831135", "-93.300445" );
 
-        dynamicGridLayoutManager = new DynamicGridLayoutManager(getContext(), 1);
-        recyclerView.setLayoutManager(dynamicGridLayoutManager);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
 
         cardView = v.findViewById(R.id.fragment_card_view_weather);
@@ -83,6 +79,7 @@ public class ForecastFragment extends Fragment implements WeatherService.DataLis
     @Override
     public void onDataLoaded(Forecast forecast) {
         if (forecast != null) {
+            adapter.updateForecastData(forecast);
             // Grab data
             String summary = forecast.getCurrently().getSummary();
             String temperature = String.valueOf(Math.round(forecast.getCurrently().getTemperature())) + "\u00B0";

@@ -1,4 +1,4 @@
-package com.nerdery.umbrella.utils;
+package com.nerdery.umbrella.utility;
 
 public class FragmentTags {
     public final static String NewCityFragment = "fragment_new_city";

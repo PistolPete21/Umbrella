@@ -55,6 +55,9 @@ public class ForecastData {
     @SerializedName("sunsetTime")
     @Expose
     private Integer sunsetTime;
+    @SerializedName("temperature")
+    @Expose
+    private Double temperature;
     @SerializedName("temperatureMax")
     @Expose
     private Double temperatureMax;
@@ -220,6 +223,14 @@ public class ForecastData {
 
     public void setSunsetTime(Integer sunsetTime) {
         this.sunsetTime = sunsetTime;
+    }
+
+    public Double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
     }
 
     public Double getTemperatureMax() {

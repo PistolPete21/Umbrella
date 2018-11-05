@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.nerdery.umbrella.R;
 import com.nerdery.umbrella.fragment.NewCityFragment;
-import com.nerdery.umbrella.utils.FragmentTags;
+import com.nerdery.umbrella.utility.FragmentTags;
 
 public class NewCityActivity extends AppCompatActivity {
 

@@ -8,6 +8,9 @@ public class Forecast {
     @SerializedName("currently")
     @Expose
     private Currently currently;
+    @SerializedName("daily")
+    @Expose
+    private Daily daily;
     @SerializedName("hourly")
     @Expose
     private Hourly hourly;
@@ -30,6 +33,14 @@ public class Forecast {
 
     public void setCurrently(Currently currently) {
         this.currently = currently;
+    }
+
+    public Daily getDaily() {
+        return daily;
+    }
+
+    public void setDaily(Daily daily) {
+        this.daily = daily;
     }
 
     public Hourly getHourly() {

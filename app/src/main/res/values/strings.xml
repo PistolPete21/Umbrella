@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Umbrella</string>
 
-    <string name="settings_button_text">You are clicking on the settings button"</string>
+    <string name="settings_button_text">You are clicking on the settings button</string>
+    <string name="grid_item_hourly_icon">You are clicking on the hourly icon</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 </resources>
