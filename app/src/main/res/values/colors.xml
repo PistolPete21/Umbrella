@@ -4,6 +4,7 @@
     <color name="weather_warm">#ff9800</color>
     <color name="weather_cool">#03a9f4</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
     <!-- Forecast card colors -->
     <color name="forecast_card_divider">#ccc</color>

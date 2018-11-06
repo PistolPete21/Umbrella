@@ -5,4 +5,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="TextBody1" parent="Base.TextAppearance.AppCompat.Body1">
+
+    </style>
+
+    <style name="TextBody2" parent="Base.TextAppearance.AppCompat.Body2">
+
+    </style>
+
 </resources>

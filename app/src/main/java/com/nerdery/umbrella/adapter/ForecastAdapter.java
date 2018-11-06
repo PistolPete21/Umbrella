@@ -1,7 +1,9 @@
 package com.nerdery.umbrella.adapter;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     private List<ForecastData> dailyForecast;
     private List<ForecastData> hourlyForecast;
 
+    private Boolean alreadyExecuted = false;
+
     public ForecastAdapter(Context context, List<ForecastData> dailyForecast) {
         this.context = context;
         this.dailyForecast = dailyForecast;
@@ -35,7 +39,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     @Override
     public int getItemCount() {
-        return dailyForecast == null ? 0 : dailyForecast.size();
+        return dailyForecast == null ? 0 : 2;
     }
 
     @NonNull
@@ -59,16 +63,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             case 1:
                 holder.day.setText(R.string.tomorrow);
                 break;
-            default:
-                holder.day.setText(dayName);
-                break;
-        }
-
-        for (int i = 0; i < hourlyForecast.size(); i ++) {
-            while(hourlyForecast.size() > 25)
-            {
-                hourlyForecast.remove(25);
-            }
         }
 
         Double dailyTemperatureMax = day.getTemperatureMax();
@@ -101,25 +95,38 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             TextView temperatureTextView = gridItem.findViewById(R.id.grid_item_hourly_temperature);
 
             ForecastData hourly = hourlyForecast.get(x);
+            int hourlyPosition = hourlyForecast.indexOf(hourly);
 
             Date timeDate = new Date(hourly.getTime() * 1000);
 
             String stringTime = DateTime.convertDateToString(timeDate, DateTime.timeFormatter);
+            Integer hourlyCurrentTime = DateTime.toHours(stringTime);
 
-            String temperature = String.valueOf(Math.round(hourly.getTemperature()))  + "\u00B0";
+            String temperature = String.valueOf(Math.round(hourly.getTemperature())) + "\u00B0";
 
             String militaryTime = DateTime.convertDateToString(timeDate, DateTime.militaryTimeFormatter);
             Integer newMilitaryTime = DateTime.toHours(militaryTime);
 
             String currentTime = DateTime.convertDateToString(Calendar.getInstance().getTime(), DateTime.militaryTimeFormatter);
-            Integer newCurrentTime = DateTime.toHours(currentTime);
-
+            Integer newCurrentTimeExact = DateTime.toHours(currentTime);
             if (position == 0) {
-                if (newMilitaryTime >= newCurrentTime) {
-                    holder.getGridLayout().addView(gridItem);
+                if (hourlyPosition < 25) {
+                    if (newMilitaryTime > newCurrentTimeExact) {
+                        holder.getGridLayout().addView(gridItem);
+                    }
                 }
             } else {
-                holder.getGridLayout().addView(gridItem);
+                if (hourlyPosition <= 24) {
+                    if (newMilitaryTime < newCurrentTimeExact) {
+                        holder.getGridLayout().addView(gridItem);
+                    }
+                }
+
+                if (hourlyPosition < 48 && hourlyPosition >= 24) {
+                    if (newMilitaryTime >= newCurrentTimeExact) {
+                        holder.getGridLayout().addView(gridItem);
+                    }
+                }
             }
 
             hourlyTextView.setText(stringTime);
@@ -127,12 +134,49 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
             String hourlyIcon = hourly.getIcon();
             IconApi iconApi = new IconApi();
-            Boolean highlighted;
+            Boolean highlighted = false;
+            int indexOfHigh = 0;
+            int indexOfLow = 0;
+
+            if (hourly.getTemperature().equals(dailyTemperatureMax)) {
+                indexOfHigh = hourlyForecast.indexOf(hourly);
+            } else if (hourly.getTemperature().equals(dailyTemperatureMinimum)) {
+                indexOfLow = hourlyForecast.indexOf(hourly);
+            }
+
+//            if(!alreadyExecuted) {
+//                if (indexOfHigh == hourlyPosition) {
+//                    highlighted = true;
+//                } else if (indexOfLow == hourlyPosition) {
+//                    highlighted = true;
+//                }
+//            }
+//            alreadyExecuted = true;
             highlighted = hourly.getTemperature().equals(dailyTemperatureMax) || hourly.getTemperature().equals(dailyTemperatureMinimum);
 
             Picasso.with(getContext())
                     .load(iconApi.getUrlForIcon(hourlyIcon, highlighted))
                     .into(iconImageView);
+
+            if (!(hourly.getTemperature().equals(dailyTemperatureMax) && hourly.getTemperature().equals(dailyTemperatureMinimum))) {
+                if (hourly.getTemperature().equals(dailyTemperatureMax)) {
+                    iconImageView.setColorFilter(ContextCompat.getColor(context, R.color.weather_warm), android.graphics.PorterDuff.Mode.SRC_IN);
+                    hourlyTextView.setTextColor(getContext().getResources().getColor(R.color.weather_warm));
+                    temperatureTextView.setTextColor(getContext().getResources().getColor(R.color.weather_warm));
+                } else if (hourly.getTemperature().equals(dailyTemperatureMinimum)) {
+                    iconImageView.setColorFilter(ContextCompat.getColor(context, R.color.weather_cool), PorterDuff.Mode.SRC_IN);
+                    hourlyTextView.setTextColor(getContext().getResources().getColor(R.color.weather_cool));
+                    temperatureTextView.setTextColor(getContext().getResources().getColor(R.color.weather_cool));
+                } else {
+                    iconImageView.setColorFilter(ContextCompat.getColor(context, R.color.black), android.graphics.PorterDuff.Mode.SRC_IN);
+                    hourlyTextView.setTextColor(getContext().getResources().getColor(R.color.black));
+                    temperatureTextView.setTextColor(getContext().getResources().getColor(R.color.black));
+                }
+            } else {
+                iconImageView.setColorFilter(ContextCompat.getColor(context, R.color.black), android.graphics.PorterDuff.Mode.SRC_IN);
+                hourlyTextView.setTextColor(getContext().getResources().getColor(R.color.black));
+                temperatureTextView.setTextColor(getContext().getResources().getColor(R.color.black));
+            }
         }
     }
 
