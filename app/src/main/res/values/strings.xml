@@ -5,4 +5,21 @@
     <string name="grid_item_hourly_icon">You are clicking on the hourly icon</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="umbrella_toolbar_text">Umbrella</string>
+    <string name="zip">Zip</string>
+    <string name="units">Units</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="unit_message">Please select a unit</string>
+    <string name="zip_message">Please enter a zip code</string>
+    <string name="zip_error">Please enter a valid zip code</string>
+    <string name="selected">Selected</string>
+
+    <string name="fetching_weather">Fetching weather...</string>
+
+    <array name="units">
+        <item >Fahrenheit</item>
+        <item >Celsius</item>
+    </array>
+
 </resources>

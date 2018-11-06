@@ -19,7 +19,9 @@ import com.nerdery.umbrella.services.IconApi;
 import com.nerdery.umbrella.utility.DateTime;
 import com.nerdery.umbrella.utility.Screen;
 import com.squareup.picasso.Picasso;
+import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -29,12 +31,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     private Context context;
     private List<ForecastData> dailyForecast;
     private List<ForecastData> hourlyForecast;
+    private LovelyProgressDialog lovelyProgressDialog;
 
     private Boolean alreadyExecuted = false;
 
-    public ForecastAdapter(Context context, List<ForecastData> dailyForecast) {
+    public ForecastAdapter(Context context, List<ForecastData> dailyForecast, LovelyProgressDialog lovelyProgressDialog) {
         this.context = context;
         this.dailyForecast = dailyForecast;
+        this.lovelyProgressDialog = lovelyProgressDialog;
     }
 
     @Override
@@ -96,6 +100,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
             ForecastData hourly = hourlyForecast.get(x);
             int hourlyPosition = hourlyForecast.indexOf(hourly);
+            List hourlySubset = new ArrayList();
 
             Date timeDate = new Date(hourly.getTime() * 1000);
 
@@ -110,9 +115,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             String currentTime = DateTime.convertDateToString(Calendar.getInstance().getTime(), DateTime.militaryTimeFormatter);
             Integer newCurrentTimeExact = DateTime.toHours(currentTime);
             if (position == 0) {
-                if (hourlyPosition < 25) {
+                if (hourlyPosition <= 24) {
                     if (newMilitaryTime > newCurrentTimeExact) {
                         holder.getGridLayout().addView(gridItem);
+                        hourlySubset.add(hourly) ;
                     }
                 }
             } else {
@@ -177,6 +183,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 hourlyTextView.setTextColor(getContext().getResources().getColor(R.color.black));
                 temperatureTextView.setTextColor(getContext().getResources().getColor(R.color.black));
             }
+        }
+        if (position == 1) {
+            lovelyProgressDialog.dismiss();
         }
     }
 

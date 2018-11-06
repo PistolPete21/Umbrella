@@ -7,6 +7,7 @@ public class WeatherLocation {
     private String name;
     private String latitude;
     private String longitude;
+    private String zip;
 
     public WeatherLocation(String name, String latitude, String longitude) {
         this.name = name;
@@ -47,4 +48,11 @@ public class WeatherLocation {
         return location;
     }
 
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
 }

@@ -1,10 +1,13 @@
 package com.nerdery.umbrella.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,8 +23,10 @@ import com.nerdery.umbrella.model.Forecast;
 import com.nerdery.umbrella.model.ForecastData;
 import com.nerdery.umbrella.model.WeatherLocation;
 import com.nerdery.umbrella.services.WeatherService;
+import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ForecastFragment extends Fragment implements WeatherService.DataListener {
 
@@ -35,18 +40,29 @@ public class ForecastFragment extends Fragment implements WeatherService.DataLis
     private ImageView settingsIcon;
     private List<ForecastData> forecast;
 
+    private LovelyProgressDialog lovelyProgressDialog;
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_weather_forecast, container, false);
 
         recyclerView = v.findViewById(R.id.fragment_weather_recyclerview);
+
+        lovelyProgressDialog = new LovelyProgressDialog(getContext());
+        lovelyProgressDialog.setIcon(R.mipmap.ic_launcher);
+        lovelyProgressDialog.setTitle(R.string.fetching_weather);
+        lovelyProgressDialog.setTopColor(Objects.requireNonNull(getContext()).getResources().getColor(R.color.weather_warm));
+        lovelyProgressDialog.show();
+
         if (adapter == null) {
-            adapter = new ForecastAdapter(getActivity(), null);
+            adapter = new ForecastAdapter(getActivity(), null, lovelyProgressDialog);
         }
 
         location = new WeatherLocation("Bloomington, MN","44.831135", "-93.300445" );
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
 
