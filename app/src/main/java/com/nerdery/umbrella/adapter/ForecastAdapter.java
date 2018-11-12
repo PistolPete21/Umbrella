@@ -184,9 +184,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 temperatureTextView.setTextColor(getContext().getResources().getColor(R.color.black));
             }
         }
-        if (position == 1) {
-            lovelyProgressDialog.dismiss();
-        }
+        lovelyProgressDialog.dismiss();
     }
 
     private Context getContext() {

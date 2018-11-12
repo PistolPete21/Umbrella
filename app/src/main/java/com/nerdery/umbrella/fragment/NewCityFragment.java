@@ -75,7 +75,7 @@ public class NewCityFragment extends Fragment implements NewCityAdapter.ItemClic
                                 if (text.length() > 5) {
                                     return false;
                                 } else {
-                                    return text.matches("\\w+");
+                                    return text.matches("\\w+[0-9]");
                                 }
                             }
                         })
